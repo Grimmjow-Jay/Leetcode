@@ -40,17 +40,16 @@ package primary.array;
  * </pre>
  */
 public class RemoveDuplicatesFromSortedArray {
-	private static RemoveDuplicatesFromSortedArray instance = new RemoveDuplicatesFromSortedArray();
 
 	public static void main(String[] args) throws Exception {
 		int[] nums = { 1, 2, 3, 4, 4, 4, 5, 5, 5, 5, 6, 7 };
-		int len = instance.removeDuplicates(nums);
+		int len = removeDuplicates(nums);
 		for (int i = 0; i < len; i++) {
 			System.out.println(nums[i]);
 		}
 	}
 
-	public int removeDuplicates(int[] nums) {
+	public static int removeDuplicates(int[] nums) {
 		if (nums == null || nums.length == 0) {
 			return 0;
 		}
