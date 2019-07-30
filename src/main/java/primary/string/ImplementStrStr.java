@@ -30,9 +30,9 @@ public class ImplementStrStr {
 		System.out.println(strStr);
 	}
 
+	// kmp算法
 	public static int strStr(String haystack, String needle) {
-		haystack.indexOf(needle);
-		return 0;
+		return haystack.indexOf(needle);
 	}
 
 }
