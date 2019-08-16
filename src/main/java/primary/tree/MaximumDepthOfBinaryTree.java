@@ -1,5 +1,9 @@
 package primary.tree;
 
+import java.util.Stack;
+
+import javafx.util.Pair;
+
 /**
  * <pre>
 给定一个二叉树，找出其最大深度。
@@ -23,21 +27,44 @@ package primary.tree;
 public class MaximumDepthOfBinaryTree {
 
 	public static void main(String[] args) {
-		TreeNode root = new TreeNode(3);
-		root.left(9).right(20);
-		root.right.left(15).right(7);
-		int maxDepth = maxDepth(root);
+		TreeNode root = new TreeNode(1);
+		root.left(2).right(3);
+		root.left.left(4);
+		root.right.right(5);
+		int maxDepth = maxDepth2(root);
 		System.out.println(maxDepth);
 	}
 
 	public static int maxDepth(TreeNode root) {
 		if (root == null) {
 			return 0;
-		} else {
-			int leftDepth = maxDepth( root.left);
-			int rightDepth = maxDepth(root.right);
-			return (leftDepth > rightDepth ? leftDepth : rightDepth) + 1;
 		}
+		int leftDepth = maxDepth(root.left);
+		int rightDepth = maxDepth(root.right);
+		return (leftDepth > rightDepth ? leftDepth : rightDepth) + 1;
+	}
+
+	public static int maxDepth2(TreeNode root) {
+		int maxDepth = 0;
+		if (root == null) {
+			return maxDepth;
+		}
+		Stack<Pair<TreeNode, Integer>> stack = new Stack<>();
+		stack.push(new Pair<TreeNode, Integer>(root, 1));
+		while (!stack.isEmpty()) {
+			Pair<TreeNode, Integer> pair = stack.pop();
+			Integer depth = pair.getValue();
+			maxDepth = maxDepth > depth ? maxDepth : depth;
+			TreeNode treeNode = pair.getKey();
+			if (treeNode.left != null) {
+				stack.push(new Pair<TreeNode, Integer>(treeNode.left, depth + 1));
+			}
+			if (treeNode.right != null) {
+				stack.push(new Pair<TreeNode, Integer>(treeNode.right, depth + 1));
+			}
+		}
+
+		return maxDepth;
 	}
 
 }
