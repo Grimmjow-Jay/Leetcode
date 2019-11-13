@@ -1,4 +1,4 @@
-package topInterviewQuesitonsIn2018;
+package topInterviewQuesitonsIn2018.dumpStackQueue;
 
 import java.util.ArrayList;
 import java.util.Iterator;

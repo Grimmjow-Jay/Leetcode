@@ -1,4 +1,4 @@
-package topInterviewQuesitonsIn2018;
+package topInterviewQuesitonsIn2018.array;
 
 import java.util.HashMap;
 import java.util.Map;

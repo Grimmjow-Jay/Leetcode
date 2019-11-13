@@ -1,4 +1,4 @@
-package topInterviewQuesitonsIn2018;
+package topInterviewQuesitonsIn2018.before;
 
 /**
  * 只出现一次的数字

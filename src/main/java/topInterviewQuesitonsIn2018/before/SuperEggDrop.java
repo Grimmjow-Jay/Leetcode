@@ -1,4 +1,4 @@
-package topInterviewQuesitonsIn2018;
+package topInterviewQuesitonsIn2018.before;
 
 /**
  * 鸡蛋掉落
