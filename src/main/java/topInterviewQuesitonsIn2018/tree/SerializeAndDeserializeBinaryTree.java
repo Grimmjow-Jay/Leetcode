@@ -79,23 +79,22 @@ public class SerializeAndDeserializeBinaryTree {
         if (chars[++index[0]] == ']') {
             index[0]++;
             return null;
-        } else {
-            int val = 0;
-            char digit;
-            boolean negative = false;
-            while (Character.isDigit(digit = chars[index[0]]) || digit == '-') {
-                index[0]++;
-                if (digit == '-') {
-                    negative = true;
-                } else {
-                    val = val * 10 + (int) digit - 48;
-                }
-            }
-            TreeNode node = new TreeNode(negative ? -val : val);
-            node.left = deserialize(chars, index);
-            node.right = deserialize(chars, index);
-            index[0]++;
-            return node;
         }
+        int val = 0;
+        char digit;
+        boolean negative = false;
+        while (Character.isDigit(digit = chars[index[0]]) || digit == '-') {
+            index[0]++;
+            if (digit == '-') {
+                negative = true;
+            } else {
+                val = val * 10 + (int) digit - 48;
+            }
+        }
+        TreeNode node = new TreeNode(negative ? -val : val);
+        node.left = deserialize(chars, index);
+        node.right = deserialize(chars, index);
+        index[0]++;
+        return node;
     }
 }
