@@ -29,17 +29,11 @@ import java.util.List;
 public class SpiralMatrix {
 
     public static void main(String[] args) {
-        int m = 5;
-        int n = 4;
-        int x = 1;
-        int[][] matrix = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            int[] ints = new int[n];
-            for (int j = 0; j < ints.length; j++) {
-                ints[j] = x++;
-            }
-            matrix[i] = ints;
-        }
+        int[][] matrix = {
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12}
+        };
         List<Integer> spiralOrder = spiralOrder(matrix);
         System.out.println(spiralOrder);
     }

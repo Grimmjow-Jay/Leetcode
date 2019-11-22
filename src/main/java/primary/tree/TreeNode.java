@@ -1,15 +1,16 @@
 package primary.tree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+public class TreeNode {
+    public int val;
+    public TreeNode left;
+    public TreeNode right;
 
-    TreeNode(int x) {
+    public TreeNode(int x) {
         val = x;
     }
 
@@ -19,7 +20,7 @@ class TreeNode {
         }
         int leftDepth = maxDepth(root.left);
         int rightDepth = maxDepth(root.right);
-        return (leftDepth > rightDepth ? leftDepth : rightDepth) + 1;
+        return Math.max(leftDepth, rightDepth) + 1;
     }
 
     private static String emptyStr(int len) {
@@ -30,12 +31,12 @@ class TreeNode {
         return builder.toString();
     }
 
-    TreeNode left(int leftVal) {
+    public TreeNode left(int leftVal) {
         this.left = new TreeNode(leftVal);
         return this;
     }
 
-    TreeNode right(int rightVal) {
+    public TreeNode right(int rightVal) {
         this.right = new TreeNode(rightVal);
         return this;
     }
@@ -73,9 +74,7 @@ class TreeNode {
         for (List<Assist> assists : levelList) {
             String empty = emptyStr(maxLen);
             String[] row = new String[assists.get(assists.size() - 1).b + 1];
-            for (int j = 0; j < row.length; j++) {
-                row[j] = empty;
-            }
+            Arrays.fill(row, empty);
             for (Assist assist : assists) {
                 String strA = "" + assist.a;
                 int diff = maxLen - strA.length();
@@ -87,7 +86,7 @@ class TreeNode {
         return builder.toString();
     }
 
-    private class Assist {
+    private static class Assist {
         TreeNode node;
         int a;
         int b;
