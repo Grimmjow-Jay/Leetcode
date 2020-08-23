@@ -1,6 +1,6 @@
 package primary.tree;
 
-import javafx.util.Pair;
+import util.Pair;
 
 import java.util.Stack;
 
