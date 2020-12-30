@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jay</groupId>
-    <artifactId>leetcode</artifactId>
+    <artifactId>Grimmjow</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>leetcode</name>
+    <name>Grimmjow</name>
     <url>http://maven.apache.org</url>
 
     <properties>
