@@ -40,30 +40,31 @@ public class YongLiangGeZhanShiXianDuiLie {
         System.out.println(cQueue.deleteHead());
         System.out.println(cQueue.deleteHead());
     }
-}
 
-class CQueue {
+    static class CQueue {
 
-    private Deque<Integer> stack1;
-    private Deque<Integer> stack2;
+        private Deque<Integer> stack1;
+        private Deque<Integer> stack2;
 
-    public CQueue() {
-        stack1 = new LinkedList<>();
-        stack2 = new LinkedList<>();
-    }
-
-    public void appendTail(int value) {
-        stack1.push(value);
-    }
-
-    public int deleteHead() {
-        if (stack2.isEmpty()) {
-            while (!stack1.isEmpty()) {
-                stack2.push(stack1.poll());
-            }
+        public CQueue() {
+            stack1 = new LinkedList<>();
+            stack2 = new LinkedList<>();
         }
-        Integer head = stack2.poll();
-        return head == null ? -1 : head;
-    }
 
+        public void appendTail(int value) {
+            stack1.push(value);
+        }
+
+        public int deleteHead() {
+            if (stack2.isEmpty()) {
+                while (!stack1.isEmpty()) {
+                    stack2.push(stack1.poll());
+                }
+            }
+            Integer head = stack2.poll();
+            return head == null ? -1 : head;
+        }
+
+    }
 }
+
