@@ -1,6 +1,6 @@
 package simple;
 
-import primary.tree.TreeNode;
+import util.TreeNode;
 
 /**
  * 404. 左叶子之和

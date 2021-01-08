@@ -1,7 +1,7 @@
 package topInterviewQuesitonsIn2018.tree;
 
 
-import primary.tree.TreeNode;
+import util.TreeNode;
 
 /**
  * 二叉树的序列化与反序列化

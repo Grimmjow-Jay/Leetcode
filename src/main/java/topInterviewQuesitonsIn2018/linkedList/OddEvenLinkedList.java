@@ -1,6 +1,6 @@
 package topInterviewQuesitonsIn2018.linkedList;
 
-import primary.linkedlist.ListNode;
+import util.ListNode;
 
 /**
  * 奇偶链表

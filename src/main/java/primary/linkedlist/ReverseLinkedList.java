@@ -1,5 +1,7 @@
 package primary.linkedlist;
 
+import util.ListNode;
+
 /**
  * <pre>
  * 反转一个单链表。

@@ -1,6 +1,6 @@
 package lcof;
 
-import primary.linkedlist.ListNode;
+import util.ListNode;
 
 import java.util.StringJoiner;
 
