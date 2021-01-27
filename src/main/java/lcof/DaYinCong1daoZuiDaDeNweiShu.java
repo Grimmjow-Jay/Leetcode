@@ -1,7 +1,6 @@
 package lcof;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * 剑指 Offer 17. 打印从1到最大的n位数
@@ -27,10 +26,7 @@ public class DaYinCong1daoZuiDaDeNweiShu {
     public static void main(String[] args) {
         int n = 1;
         int[] numbers = printNumbers(n);
-        String collect = Arrays.stream(numbers)
-                .mapToObj(Integer::toString)
-                .collect(Collectors.joining(", "));
-        System.out.println(collect);
+        System.out.println(Arrays.toString(numbers));
 
     }
 
