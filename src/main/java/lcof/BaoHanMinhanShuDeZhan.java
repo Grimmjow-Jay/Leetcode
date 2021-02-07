@@ -40,36 +40,36 @@ public class BaoHanMinhanShuDeZhan {
     }
 
 
-}
+    static class MinStack {
 
-class MinStack {
+        Stack<Integer> a;
+        Stack<Integer> b;
 
-    Stack<Integer> a;
-    Stack<Integer> b;
+        public MinStack() {
+            a = new Stack<>();
+            b = new Stack<>();
+        }
 
-    public MinStack() {
-        a = new Stack<>();
-        b = new Stack<>();
-    }
+        public void push(int x) {
+            a.push(x);
+            if (b.empty() || b.peek() >= x) {
+                b.add(x);
+            }
+        }
 
-    public void push(int x) {
-        a.push(x);
-        if (b.empty() || b.peek() >= x) {
-            b.add(x);
+        public void pop() {
+            if (a.pop().equals(b.peek())) {
+                b.pop();
+            }
+        }
+
+        public int top() {
+            return a.peek();
+        }
+
+        public int min() {
+            return b.peek();
         }
     }
-
-    public void pop() {
-        if (a.pop().equals(b.peek())) {
-            b.pop();
-        }
-    }
-
-    public int top() {
-        return a.peek();
-    }
-
-    public int min() {
-        return b.peek();
-    }
 }
+
