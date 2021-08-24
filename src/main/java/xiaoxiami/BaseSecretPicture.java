@@ -8,9 +8,9 @@ import java.io.*;
  */
 public abstract class BaseSecretPicture {
 
-    private static final String PASSWORD = "The secret of my heart. ";
+    static final String PASSWORD = "The secret of my heart. ";
 
-    private static final String ENCRYPT_SIGN = "_encrypt";
+    static final String ENCRYPT_SIGN = "_encrypt";
 
     /**
      * operate file
@@ -49,70 +49,71 @@ public abstract class BaseSecretPicture {
         }
     }
 
-    static class Encrypt extends BaseSecretPicture {
 
-        public static void main(String[] args) throws IOException {
+}
 
-            File source = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami");
-            File target = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami" + ENCRYPT_SIGN);
-            new Encrypt().doSecret(source, target);
+class Encrypt extends BaseSecretPicture {
 
-        }
+    public static void main(String[] args) throws IOException {
 
-        @Override
-        void operateFile(File source, File target) throws IOException {
-            try (InputStream inputStream = new FileInputStream(source);
-                 OutputStream outputStream = new FileOutputStream(target)) {
+        File source = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami");
+        File target = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami" + ENCRYPT_SIGN);
+        new Encrypt().doSecret(source, target);
 
-                outputStream.write(PASSWORD.getBytes());
+    }
 
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, len);
-                }
+    @Override
+    void operateFile(File source, File target) throws IOException {
+        try (InputStream inputStream = new FileInputStream(source);
+             OutputStream outputStream = new FileOutputStream(target)) {
+
+            outputStream.write(PASSWORD.getBytes());
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
             }
-        }
-
-        @Override
-        String targetFileName(String sourceName) {
-            return sourceName + ENCRYPT_SIGN;
         }
     }
 
-    static class Decrypt extends BaseSecretPicture {
+    @Override
+    String targetFileName(String sourceName) {
+        return sourceName + ENCRYPT_SIGN;
+    }
+}
 
-        public static void main(String[] args) throws IOException {
+class Decrypt extends BaseSecretPicture {
 
-            File source = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami" + ENCRYPT_SIGN);
-            File target = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami");
-            new Decrypt().doSecret(source, target);
+    public static void main(String[] args) throws IOException {
 
-        }
+        File source = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami" + ENCRYPT_SIGN);
+        File target = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami");
+        new Decrypt().doSecret(source, target);
 
-        @Override
-        void operateFile(File source, File target) throws IOException {
-            try (InputStream inputStream = new FileInputStream(source);
-                 OutputStream outputStream = new FileOutputStream(target)) {
+    }
 
-                byte[] secretBytes = PASSWORD.getBytes();
-                int secret = inputStream.read(secretBytes);
-                if (secret < secretBytes.length) {
-                    throw new IOException("Can not decrypt.");
-                }
+    @Override
+    void operateFile(File source, File target) throws IOException {
+        try (InputStream inputStream = new FileInputStream(source);
+             OutputStream outputStream = new FileOutputStream(target)) {
 
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, len);
-                }
+            byte[] secretBytes = PASSWORD.getBytes();
+            int secret = inputStream.read(secretBytes);
+            if (secret < secretBytes.length) {
+                throw new IOException("Can not decrypt.");
             }
-        }
 
-        @Override
-        String targetFileName(String sourceName) {
-            return sourceName.substring(0, sourceName.length() - ENCRYPT_SIGN.length());
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, len);
+            }
         }
     }
 
+    @Override
+    String targetFileName(String sourceName) {
+        return sourceName.substring(0, sourceName.length() - ENCRYPT_SIGN.length());
+    }
 }
