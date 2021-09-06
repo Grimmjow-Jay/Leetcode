@@ -31,6 +31,23 @@ public class TreeNode {
         return builder.toString();
     }
 
+    public static TreeNode create(Integer... nums) {
+        TreeNode[] treeNodes = new TreeNode[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != null) {
+                treeNodes[i] = new TreeNode(nums[i]);
+            }
+        }
+        int last = treeNodes.length / 2;
+        for (int i = 0; i < last; i++) {
+            if (treeNodes[i] != null) {
+                treeNodes[i].left = treeNodes[i * 2 + 1];
+                treeNodes[i].right = treeNodes[i * 2 + 2];
+            }
+        }
+        return treeNodes[0];
+    }
+
     public TreeNode left(int leftVal) {
         this.left = new TreeNode(leftVal);
         return this;
