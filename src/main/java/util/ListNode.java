@@ -6,6 +6,9 @@ public class ListNode {
     public int val;
     public ListNode next;
 
+    public ListNode() {
+    }
+
     public ListNode(int x) {
         val = x;
     }
@@ -27,9 +30,9 @@ public class ListNode {
     public String toString() {
         StringJoiner joiner = new StringJoiner("->", "[", "]");
         joiner.add("" + val);
-        ListNode next = this;
-        while ((next = next.next) != null) {
-            joiner.add("" + next.val);
+        ListNode temp = this;
+        while ((temp = temp.next) != null) {
+            joiner.add("" + temp.val);
         }
         return joiner.toString();
     }
