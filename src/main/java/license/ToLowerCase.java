@@ -32,14 +32,32 @@ public class ToLowerCase {
         String s = "lovely";
         String lowerCase = toLowerCase(s);
         System.out.println(lowerCase);
+        int count = 1000000;
+
+        String lowerCase1 = "";
+        long l1 = System.currentTimeMillis();
+        for (int i = 0; i < count; i++) {
+            lowerCase1 = toLowerCase(s);
+        }
+        long l2 = System.currentTimeMillis();
+
+        String lowerCase2 = "";
+        long l3 = System.currentTimeMillis();
+        for (int i = 0; i < count; i++) {
+            lowerCase2 = s.toLowerCase();
+        }
+        long l4 = System.currentTimeMillis();
+
+        System.out.println(lowerCase1 + ": " + (l2 - l1));
+        System.out.println(lowerCase2 + ": " + (l4 - l3));
+
     }
 
     private static String toLowerCase(String s) {
         char[] chars = s.toCharArray();
         for (int i = 0, length = chars.length; i < length; i++) {
-            char c = chars[i];
-            if (c >= 'A' && c <= 'Z') {
-                chars[i] = (char) (c + 'a' - 'A');
+            if (chars[i] >= 'A' && chars[i] <= 'Z') {
+                chars[i] |= 32;
             }
         }
         return new String(chars);
