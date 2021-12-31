@@ -1,6 +1,7 @@
 package demo;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -12,37 +13,21 @@ public class HttpUrlConnectionDemo {
 
     public static void main(String[] args) throws IOException {
 
-        URL url1 = new URL("http://localhost:9004/api/v1/basic/mainInfo/export/test");
-        URL url2 = new URL("http://localhost:9106/basic/mainInfo/export/test");
-        File dir1 = new File("C:\\Users\\jay\\Desktop\\temp\\export_download1");
-        File dir2 = new File("C:\\Users\\jay\\Desktop\\temp\\export_download2");
+        URL url = new URL("http://localhost:9106/basic/mainInfo/pageList");
+        URLConnection urlConnection = url.openConnection();
+        urlConnection.setRequestProperty("Content-Type", "application/json");
+        urlConnection.setRequestProperty("zc-user-id", "1");
+        urlConnection.setRequestProperty("zc-user-name", "test");
+        urlConnection.setDoOutput(true);
 
-        doDownload(url1, dir1);
-        doDownload(url2, dir2);
+        urlConnection.getOutputStream().write("{}".getBytes());
 
-    }
-
-    private static void doDownload(URL url, File dir) throws IOException {
-        long start2 = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
-            download(url, new File(dir, "export_" + i + ".txt"));
-        }
-        long end2 = System.currentTimeMillis();
-        System.out.println(end2 - start2);
-    }
-
-    private static void download(URL url1, File file) throws IOException {
-
-        URLConnection urlConnection = url1.openConnection();
         InputStream inputStream = urlConnection.getInputStream();
         byte[] buffer = new byte[1024];
-        try (FileWriter fileWriter = new FileWriter(file);
-             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
-            int n;
-            while (-1 != (n = inputStream.read(buffer))) {
-                bufferedWriter.write(new String(buffer, 0, n));
-            }
+        int n;
+        while (-1 != (n = inputStream.read(buffer))) {
+            System.out.write(buffer, 0, n);
         }
 
     }
