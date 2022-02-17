@@ -29,7 +29,7 @@ public class SubtractExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class SubtractSymbol extends SymbolExpression {
+    public static class SubtractSymbol extends SymbolExpression<SubtractExpression> {
 
         @Override
         public OrderGroup order() {
@@ -42,18 +42,14 @@ public class SubtractExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public SubtractExpression shrink() {
 
             SubtractExpression subtractExpression = new SubtractExpression(
                     (CalculableExpression) this.prev, (CalculableExpression) this.next);
             join(subtractExpression, this.next.next);
             join(this.prev.prev, subtractExpression);
 
-            if (head == this.prev) {
-                return subtractExpression;
-            } else {
-                return head;
-            }
+            return subtractExpression;
         }
     }
 }

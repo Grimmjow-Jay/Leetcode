@@ -3,7 +3,6 @@ package com.jay.calculator;
 import com.jay.calculator.expressions.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -35,7 +34,8 @@ public class SimpleCalculator {
 
     private Expression analysis(String expression) {
 
-        List<Expression> expressions = new ArrayList<>();
+        Expression.VirtualHeadExpression headPrev = new Expression.VirtualHeadExpression();
+        Expression node = headPrev;
         Boolean lastIsNumber = null;
         int from = 0;
         for (int i = 0; i < expression.length(); i++) {
@@ -51,13 +51,13 @@ public class SimpleCalculator {
                 if (lastIsNumber) {
                     // 123+22
                     //    ↑
-                    expressions.add(new NumberExpression(lastExpression));
+                    node = node.append(new NumberExpression(lastExpression));
                     from = i;
                 } else {
                     // 123+sin45
                     //     ↑
                     if (symbolExpressionFactory.effective(lastExpression)) {
-                        expressions.add(symbolExpressionFactory.create(lastExpression));
+                        node = node.append(symbolExpressionFactory.create(lastExpression));
                         from = i;
                     }
                 }
@@ -65,7 +65,7 @@ public class SimpleCalculator {
                 if (!lastIsNumber) {
                     // 123+sin45
                     //        ↑
-                    expressions.add(symbolExpressionFactory.create(lastExpression));
+                    node = node.append(symbolExpressionFactory.create(lastExpression));
                     from = i;
                 }
             }
@@ -75,16 +75,12 @@ public class SimpleCalculator {
 
         String last = expression.substring(from);
         if (symbolExpressionFactory.effective(last)) {
-            expressions.add(symbolExpressionFactory.create(last));
+            node.append(symbolExpressionFactory.create(last));
         } else {
-            expressions.add(new NumberExpression(last));
+            node.append(new NumberExpression(last));
         }
 
-        int size = expressions.size();
-        for (int i = 1; i < size; i++) {
-            Expression.join(expressions.get(i - 1), expressions.get(i));
-        }
-        return expressions.get(0);
+        return headPrev.pop();
     }
 
     private CalculableExpression shrinkBracket(Expression head) {
@@ -161,22 +157,22 @@ public class SimpleCalculator {
 
     private Expression shrink(Expression head, OrderGroup orderGroup) {
 
+        Expression.VirtualHeadExpression headPrev = new Expression.VirtualHeadExpression(head);
+
         Expression node = head;
         while (node != null) {
 
             if (node instanceof SymbolExpression) {
-                SymbolExpression symbolExpression = (SymbolExpression) node;
+                SymbolExpression<?> symbolExpression = (SymbolExpression<?>) node;
                 if (orderGroup.equals(symbolExpression.order())) {
-                    head = symbolExpression.shrink(head);
-                    node = head;
-                    continue;
+                    node = symbolExpression.shrink();
                 }
             }
 
             node = node.next();
         }
 
-        return head;
+        return headPrev.pop();
     }
 
 }

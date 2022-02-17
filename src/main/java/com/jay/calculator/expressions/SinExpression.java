@@ -26,7 +26,7 @@ public class SinExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class SinSymbol extends SymbolExpression {
+    public static class SinSymbol extends SymbolExpression<SinExpression> {
 
         @Override
         public OrderGroup order() {
@@ -39,16 +39,13 @@ public class SinExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public SinExpression shrink() {
 
             SinExpression sinExpression = new SinExpression((CalculableExpression) this.next);
             join(sinExpression, this.next.next);
             join(this.prev, sinExpression);
-            if (head == this) {
-                return sinExpression;
-            } else {
-                return head;
-            }
+
+            return sinExpression;
 
         }
 

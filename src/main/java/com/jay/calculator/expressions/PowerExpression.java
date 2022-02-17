@@ -31,7 +31,7 @@ public class PowerExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/17
      */
-    public static class PowerSymbol extends SymbolExpression {
+    public static class PowerSymbol extends SymbolExpression<PowerExpression> {
 
         @Override
         public OrderGroup order() {
@@ -44,7 +44,7 @@ public class PowerExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public PowerExpression shrink() {
 
             PowerExpression powerExpression = new PowerExpression(
                     (CalculableExpression) this.prev, (CalculableExpression) this.next);
@@ -52,11 +52,7 @@ public class PowerExpression extends CalculableExpression {
             join(powerExpression, this.next.next);
             join(this.prev.prev, powerExpression);
 
-            if (head == this.prev) {
-                return powerExpression;
-            } else {
-                return head;
-            }
+            return powerExpression;
 
         }
 

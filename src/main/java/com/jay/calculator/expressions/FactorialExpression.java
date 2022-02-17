@@ -58,7 +58,7 @@ public class FactorialExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class FactorialSymbol extends SymbolExpression {
+    public static class FactorialSymbol extends SymbolExpression<FactorialExpression> {
 
         @Override
         public OrderGroup order() {
@@ -71,16 +71,13 @@ public class FactorialExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public FactorialExpression shrink() {
 
-            FactorialExpression sinExpression = new FactorialExpression((CalculableExpression) this.prev);
-            join(sinExpression, this.next);
-            join(this.prev.prev, sinExpression);
-            if (head == this.prev) {
-                return sinExpression;
-            } else {
-                return head;
-            }
+            FactorialExpression factorialExpression = new FactorialExpression((CalculableExpression) this.prev);
+            join(factorialExpression, this.next);
+            join(this.prev.prev, factorialExpression);
+
+            return factorialExpression;
 
         }
 

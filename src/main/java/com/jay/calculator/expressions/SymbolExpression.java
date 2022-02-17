@@ -6,13 +6,13 @@ import com.jay.calculator.OrderGroup;
  * @author Jay Yang
  * @date 2022/2/9
  */
-public abstract class SymbolExpression extends Expression implements Cloneable {
+public abstract class SymbolExpression<T extends CalculableExpression> extends Expression implements Cloneable {
 
     public abstract OrderGroup order();
 
     public abstract String symbol();
 
-    public abstract Expression shrink(Expression head);
+    public abstract T shrink();
 
     @Override
     public String toString() {

@@ -6,7 +6,7 @@ import com.jay.calculator.OrderGroup;
  * @author Jay Yang
  * @date 2022/2/16
  */
-public abstract class BracketSymbolExpression extends SymbolExpression {
+public abstract class BracketSymbolExpression extends SymbolExpression<CalculableExpression> {
 
     @Override
     public OrderGroup order() {
@@ -18,7 +18,7 @@ public abstract class BracketSymbolExpression extends SymbolExpression {
     }
 
     @Override
-    public Expression shrink(Expression head) {
+    public CalculableExpression shrink() {
         throw new UnsupportedOperationException();
     }
 

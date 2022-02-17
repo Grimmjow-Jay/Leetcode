@@ -29,7 +29,7 @@ public class MultiplyExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class MultiplySymbol extends SymbolExpression {
+    public static class MultiplySymbol extends SymbolExpression<MultiplyExpression> {
 
         @Override
         public OrderGroup order() {
@@ -42,18 +42,14 @@ public class MultiplyExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public MultiplyExpression shrink() {
 
             MultiplyExpression multiplyExpression = new MultiplyExpression(
                     (CalculableExpression) this.prev, (CalculableExpression) this.next);
             join(multiplyExpression, this.next.next);
             join(this.prev.prev, multiplyExpression);
 
-            if (head == this.prev) {
-                return multiplyExpression;
-            } else {
-                return head;
-            }
+            return multiplyExpression;
         }
     }
 }

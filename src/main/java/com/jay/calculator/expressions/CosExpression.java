@@ -25,7 +25,7 @@ public class CosExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/17
      */
-    public static class CosSymbol extends SymbolExpression {
+    public static class CosSymbol extends SymbolExpression<CosExpression> {
 
         @Override
         public OrderGroup order() {
@@ -38,16 +38,13 @@ public class CosExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public CosExpression shrink() {
 
             CosExpression cos = new CosExpression((CalculableExpression) this.next);
             join(cos, this.next.next);
             join(this.prev, cos);
-            if (head == this) {
-                return cos;
-            } else {
-                return head;
-            }
+
+            return cos;
 
         }
 

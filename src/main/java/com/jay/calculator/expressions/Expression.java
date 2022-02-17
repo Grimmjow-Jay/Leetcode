@@ -39,4 +39,22 @@ public abstract class Expression {
         return next;
     }
 
+    public static class VirtualHeadExpression extends Expression {
+
+        public VirtualHeadExpression(Expression next) {
+            join(this, next);
+        }
+
+        public VirtualHeadExpression() {
+            this(null);
+        }
+
+
+        public Expression pop() {
+            Expression head = next;
+            disconnect(this, head);
+            return head;
+        }
+    }
+
 }

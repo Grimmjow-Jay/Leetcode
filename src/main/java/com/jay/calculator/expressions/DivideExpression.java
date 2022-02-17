@@ -31,7 +31,7 @@ public class DivideExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class DivideSymbol extends SymbolExpression {
+    public static class DivideSymbol extends SymbolExpression<DivideExpression> {
 
         @Override
         public OrderGroup order() {
@@ -44,18 +44,14 @@ public class DivideExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public DivideExpression shrink() {
 
             DivideExpression divideExpression = new DivideExpression(
                     (CalculableExpression) this.prev, (CalculableExpression) this.next);
             join(divideExpression, this.next.next);
             join(this.prev.prev, divideExpression);
 
-            if (head == this.prev) {
-                return divideExpression;
-            } else {
-                return head;
-            }
+            return divideExpression;
         }
 
     }

@@ -29,7 +29,7 @@ public class AddExpression extends CalculableExpression {
      * @author Jay Yang
      * @date 2022/2/9
      */
-    public static class AddSymbol extends SymbolExpression {
+    public static class AddSymbol extends SymbolExpression<AddExpression> {
 
         @Override
         public OrderGroup order() {
@@ -42,18 +42,14 @@ public class AddExpression extends CalculableExpression {
         }
 
         @Override
-        public Expression shrink(Expression head) {
+        public AddExpression shrink() {
 
             AddExpression addExpression = new AddExpression(
                     (CalculableExpression) this.prev, (CalculableExpression) this.next);
             join(addExpression, this.next.next);
             join(this.prev.prev, addExpression);
 
-            if (head == this.prev) {
-                return addExpression;
-            } else {
-                return head;
-            }
+            return addExpression;
         }
     }
 }
