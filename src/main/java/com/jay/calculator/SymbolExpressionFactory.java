@@ -8,7 +8,7 @@ import com.jay.calculator.expressions.SymbolExpression;
  */
 public interface SymbolExpressionFactory {
 
-    SymbolExpression create(String symbol);
+    SymbolExpression<?> create(String symbol);
 
     boolean effective(String symbol);
 

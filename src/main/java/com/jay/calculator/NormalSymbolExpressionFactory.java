@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class NormalSymbolExpressionFactory implements SymbolExpressionFactory {
 
-    private final Map<String, SymbolExpression> symbolExpressionMap = new ConcurrentHashMap<>();
+    private final Map<String, SymbolExpression<?>> symbolExpressionMap = new ConcurrentHashMap<>();
 
     public NormalSymbolExpressionFactory() {
         initSymbolExpressionInstances();
@@ -32,21 +32,21 @@ public class NormalSymbolExpressionFactory implements SymbolExpressionFactory {
         );
     }
 
-    public void registerSymbolExpression(SymbolExpression... symbolExpressions) {
-        for (SymbolExpression symbolExpression : symbolExpressions) {
+    public void registerSymbolExpression(SymbolExpression<?>... symbolExpressions) {
+        for (SymbolExpression<?> symbolExpression : symbolExpressions) {
             symbolExpressionMap.put(symbolExpression.symbol(), symbolExpression);
         }
     }
 
     @Override
-    public SymbolExpression create(String symbol) {
-        SymbolExpression symbolExpression = symbolExpressionMap.get(symbol);
+    public SymbolExpression<?> create(String symbol) {
+        SymbolExpression<?> symbolExpression = symbolExpressionMap.get(symbol);
         if (symbolExpression == null) {
             throw new UnsupportedOperationException("symbol '" + symbol + "' not support");
         }
 
         try {
-            return (SymbolExpression) symbolExpression.clone();
+            return (SymbolExpression<?>) symbolExpression.clone();
         } catch (CloneNotSupportedException e) {
             throw new UnsupportedOperationException(e);
         }
