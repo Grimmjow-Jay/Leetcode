@@ -24,7 +24,11 @@ public class NormalSymbolExpressionFactory implements SymbolExpressionFactory {
                 new MultiplyExpression.MultiplySymbol(),
                 new DivideExpression.DivideSymbol(),
                 new FactorialExpression.FactorialSymbol(),
-                new SinExpression.SinSymbol()
+                new PowerExpression.PowerSymbol(),
+                new SinExpression.SinSymbol(),
+                new CosExpression.CosSymbol(),
+                new BracketSymbolExpression.Left(),
+                new BracketSymbolExpression.Right()
         );
     }
 

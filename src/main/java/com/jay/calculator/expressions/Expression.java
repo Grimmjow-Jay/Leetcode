@@ -21,6 +21,15 @@ public abstract class Expression {
         }
     }
 
+    public static void disconnect(Expression node, Expression next) {
+        if (node != null) {
+            node.next = null;
+        }
+        if (next != null) {
+            next.prev = null;
+        }
+    }
+
     public Expression next() {
         return next;
     }

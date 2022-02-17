@@ -8,9 +8,6 @@ import com.jay.calculator.OrderGroup;
  */
 public abstract class SymbolExpression extends Expression implements Cloneable {
 
-    public SymbolExpression() {
-    }
-
     public abstract OrderGroup order();
 
     public abstract String symbol();

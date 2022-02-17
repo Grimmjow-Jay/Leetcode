@@ -10,6 +10,11 @@ import java.util.List;
 public enum OrderGroup {
 
     /**
+     * 括号
+     */
+    BRACKET,
+
+    /**
      * 三角函数
      */
     TRIGONOMETRIC,
@@ -21,9 +26,8 @@ public enum OrderGroup {
     /**
      * 加、减
      */
-    ADD_SUBTRACT,
+    ADD_SUBTRACT;
 
-    L400;
 
     public static List<OrderGroup> getOrder() {
         return Arrays.asList(OrderGroup.values());

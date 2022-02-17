@@ -23,7 +23,8 @@ public class DivideExpression extends CalculableExpression {
     @Override
     public BigDecimal calculate() {
         return first.calculate()
-                .divide(second.calculate(), RoundingMode.HALF_UP);
+                .divide(second.calculate(), 30, RoundingMode.HALF_UP)
+                .stripTrailingZeros();
     }
 
     /**
