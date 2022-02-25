@@ -34,6 +34,10 @@ public abstract class Expression {
         return next;
     }
 
+    public Expression prev() {
+        return prev;
+    }
+
     public Expression append(Expression next) {
         join(this, next);
         return next;
@@ -49,12 +53,12 @@ public abstract class Expression {
             this(null);
         }
 
-
         public Expression pop() {
             Expression head = next;
             disconnect(this, head);
             return head;
         }
+
     }
 
 }

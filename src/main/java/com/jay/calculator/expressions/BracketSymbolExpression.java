@@ -13,10 +13,6 @@ public abstract class BracketSymbolExpression extends SymbolExpression<Calculabl
         return OrderGroup.BRACKET;
     }
 
-    public Expression prev() {
-        return super.prev;
-    }
-
     @Override
     public CalculableExpression shrink() {
         throw new UnsupportedOperationException();
