@@ -2,9 +2,6 @@ package practice.primary.linkedlist;
 
 import practice.util.ListNode;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * <pre>
  * 给定一个链表，判断链表中是否有环。
@@ -33,21 +30,35 @@ import java.util.Set;
 public class LinkedListCycle {
 
     public static void main(String[] args) {
-        ListNode head = ListNode.newInstance(1, 2, 2, 1);
+        ListNode head = ListNode.newInstance(0);
+        ListNode node1 = ListNode.newInstance(1);
+        ListNode node2 = ListNode.newInstance(2);
+        ListNode node3 = ListNode.newInstance(3);
+        ListNode node4 = ListNode.newInstance(4);
+
+        head.next = node1;
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = head;
+
         boolean hasCycle = hasCycle(head);
         System.out.println(hasCycle);
     }
 
-    public static boolean hasCycle(ListNode head) {
-        Set<ListNode> nodesSeen = new HashSet<>();
-        while (head != null) {
-            if (nodesSeen.contains(head)) {
-                return true;
-            } else {
-                nodesSeen.add(head);
+    private static boolean hasCycle(ListNode head) {
+        ListNode node1 = head;
+        ListNode node2 = head;
+        while (true) {
+            if (node1 == null || node2 == null || node2.next == null) {
+                return false;
             }
-            head = head.next;
+            node1 = node1.next;
+            node2 = node2.next.next;
+            if (node1 == node2) {
+                return true;
+            }
         }
-        return false;
     }
+
 }
