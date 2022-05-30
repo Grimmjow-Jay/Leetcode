@@ -24,7 +24,7 @@ public class ConcurrentHashMapTest {
 
     @Data
     @AllArgsConstructor
-    private static class SameHash {
+    public static class SameHash {
 
         private int id;
 
