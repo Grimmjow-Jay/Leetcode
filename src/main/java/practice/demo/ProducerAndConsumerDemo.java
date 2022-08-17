@@ -14,15 +14,23 @@ public class ProducerAndConsumerDemo {
     public static void main(String[] args) {
         Queue<String> logs = new LinkedList<>();
         Thread consumer = new Thread(() -> {
+
+            int spinCount = 0;
+            final int maxSpinCount = 10;
+
             while (true) {
                 String log = logs.poll();
                 if (log == null) {
-                    try {
-                        LockSupport.park();
-                        System.out.println("消费者被唤醒");
-                    } catch (Exception e) {
-                        return;
+                    if (++spinCount > maxSpinCount) {
+                        spinCount = 0;
+                        try {
+                            LockSupport.park();
+                            System.out.println("消费者被唤醒");
+                        } catch (Exception e) {
+                            return;
+                        }
                     }
+
                 } else {
                     System.out.println("打印: " + log);
                 }
