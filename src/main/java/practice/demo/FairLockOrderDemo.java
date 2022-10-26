@@ -1,7 +1,5 @@
 package practice.demo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -14,20 +12,17 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class FairLockOrderDemo {
 
-    private static final Object lock = new Object();
-
     public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 100; i++) {
-            boolean fair = false;
-            demo();
-//            demo1(fair);
+            synchronizedDemo();
+//            boolean fair = false;
+//            reentrantLockDemo(fair);
         }
     }
 
-    private static void demo() throws InterruptedException {
+    private static void synchronizedDemo() throws InterruptedException {
 
-        List<String> list = new ArrayList<>();
-
+        final Object lock = new Object();
         int totalThread = 25;
         int cyclicBarrierThreadCount = 20;
         CyclicBarrier cyclicBarrier = new CyclicBarrier(cyclicBarrierThreadCount);
@@ -55,11 +50,11 @@ public class FairLockOrderDemo {
             new Thread(() -> {
 
                 synchronized (lock) {
-                    list.add(Thread.currentThread().getName());
+                    System.out.print(Thread.currentThread().getName() + "\t");
                     cdl.countDown();
                 }
 
-            }, "demo-thread-------" + i)
+            }, "++thread" + (1000000 + i))
                     .start();
 
         }
@@ -73,21 +68,20 @@ public class FairLockOrderDemo {
                 }
 
                 synchronized (lock) {
-                    list.add(Thread.currentThread().getName());
+                    System.out.print(Thread.currentThread().getName() + "\t");
                     cdl.countDown();
                 }
-            }, "demo-thread+++++++" + i).start();
+            }, "--thread" + (1000000 + i)).start();
         }
 
         cdl.await();
-        System.out.println(list);
+        System.out.println();
 
     }
 
-    private static void demo1(boolean fair) throws InterruptedException {
+    private static void reentrantLockDemo(boolean fair) throws InterruptedException {
 
         ReentrantLock reentrantLock = new ReentrantLock(fair);
-        List<String> list = new ArrayList<>();
 
         int totalThread = 25;
         int cyclicBarrierThreadCount = 20;
@@ -116,11 +110,11 @@ public class FairLockOrderDemo {
             new Thread(() -> {
 
                 reentrantLock.lock();
-                list.add(Thread.currentThread().getName());
+                System.out.print(Thread.currentThread().getName() + "\t");
                 cdl.countDown();
                 reentrantLock.unlock();
 
-            }, "demo-thread-------" + i)
+            }, "++thread" + (1000000 + i))
                     .start();
 
         }
@@ -134,15 +128,15 @@ public class FairLockOrderDemo {
                 }
 
                 reentrantLock.lock();
-                list.add(Thread.currentThread().getName());
+                System.out.print(Thread.currentThread().getName() + "\t");
                 cdl.countDown();
                 reentrantLock.unlock();
 
-            }, "demo-thread+++++++" + i).start();
+            }, "--thread" + (1000000 + i)).start();
         }
 
         cdl.await();
-        System.out.println(list);
+        System.out.println();
     }
 
 }
