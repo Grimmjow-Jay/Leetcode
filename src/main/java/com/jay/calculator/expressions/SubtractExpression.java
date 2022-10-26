@@ -10,9 +10,9 @@ import java.math.BigDecimal;
  */
 public class SubtractExpression extends CalculableExpression {
 
-    private CalculableExpression first;
+    private final CalculableExpression first;
 
-    private CalculableExpression second;
+    private final CalculableExpression second;
 
     public SubtractExpression(CalculableExpression first, CalculableExpression second) {
         this.first = first;

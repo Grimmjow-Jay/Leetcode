@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class SinExpression extends CalculableExpression {
 
-    private CalculableExpression angle;
+    private final CalculableExpression angle;
 
     public SinExpression(CalculableExpression angle) {
         this.angle = angle;

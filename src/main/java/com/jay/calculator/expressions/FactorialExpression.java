@@ -13,7 +13,7 @@ public class FactorialExpression extends CalculableExpression {
 
     private final BigDecimal max = new BigDecimal(60);
 
-    private CalculableExpression bottom;
+    private final CalculableExpression bottom;
 
     public FactorialExpression(CalculableExpression bottom) {
         this.bottom = bottom;

@@ -11,9 +11,9 @@ import java.math.RoundingMode;
  */
 public class DivideExpression extends CalculableExpression {
 
-    private CalculableExpression first;
+    private final CalculableExpression first;
 
-    private CalculableExpression second;
+    private final CalculableExpression second;
 
     public DivideExpression(CalculableExpression first, CalculableExpression second) {
         this.first = first;

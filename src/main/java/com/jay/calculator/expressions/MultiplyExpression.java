@@ -10,9 +10,9 @@ import java.math.BigDecimal;
  */
 public class MultiplyExpression extends CalculableExpression {
 
-    private CalculableExpression first;
+    private final CalculableExpression first;
 
-    private CalculableExpression second;
+    private final CalculableExpression second;
 
     public MultiplyExpression(CalculableExpression first, CalculableExpression second) {
         this.first = first;

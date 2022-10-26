@@ -10,7 +10,7 @@ import java.math.BigDecimal;
  */
 public class CosExpression extends CalculableExpression {
 
-    private CalculableExpression angle;
+    private final CalculableExpression angle;
 
     public CosExpression(CalculableExpression angle) {
         this.angle = angle;

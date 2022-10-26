@@ -10,8 +10,8 @@ import java.math.BigDecimal;
  */
 public class PowerExpression extends CalculableExpression {
 
-    private CalculableExpression base;
-    private CalculableExpression exponent;
+    private final CalculableExpression base;
+    private final CalculableExpression exponent;
 
     public PowerExpression(CalculableExpression base, CalculableExpression exponent) {
         this.base = base;
