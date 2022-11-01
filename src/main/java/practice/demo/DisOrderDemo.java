@@ -8,10 +8,7 @@ package practice.demo;
  */
 public class DisOrderDemo {
 
-    private static int x;
-    private static int y;
-    private static int a;
-    private static int b;
+    private static int x, y, a, b;
 
     public static void main(String[] args) throws InterruptedException {
 
