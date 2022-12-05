@@ -1,6 +1,7 @@
 package practice.demo;
 
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * @author Jay Yang
@@ -10,18 +11,31 @@ public class RateLimiterDemo {
 
     public static void main(String[] args) {
 
-        TokenBucketRateLimiter rateLimiter = new TokenBucketRateLimiter(60, 10);
+        AtomicLong count = new AtomicLong();
+        final long startTime = System.currentTimeMillis();
 
-        long startTime = System.currentTimeMillis();
-        long i = 0L;
+        Thread countThread = new Thread(() -> {
+            long lastCount = 0L;
+            while (true) {
+                LockSupport.parkUntil(System.currentTimeMillis() + 5000L);
+
+                long thisCount = count.get();
+                System.out.println("====== " + (thisCount - lastCount) + " per 5 seconds");
+                lastCount = thisCount;
+            }
+        });
+
+        countThread.setDaemon(true);
+        countThread.start();
+
+        TokenBucketRateLimiter rateLimiter = new TokenBucketRateLimiter(60, 3);
 
         while (System.currentTimeMillis() - startTime < (60 * 1000L)) {
 
             boolean acquired = rateLimiter.tryAcquire();
             if (acquired) {
-                System.out.println(System.currentTimeMillis() + ": " + i);
+                count.incrementAndGet();
             }
-            i++;
         }
     }
 
