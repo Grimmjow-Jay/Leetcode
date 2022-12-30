@@ -1,6 +1,10 @@
 package practice.xiaoxiami;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 
 /**
  * @author Grimm
@@ -64,8 +68,8 @@ class Encrypt extends BaseSecretPicture {
 
     @Override
     void operateFile(File source, File target) throws IOException {
-        try (InputStream inputStream = new FileInputStream(source);
-             OutputStream outputStream = new FileOutputStream(target)) {
+        try (InputStream inputStream = Files.newInputStream(source.toPath());
+             OutputStream outputStream = Files.newOutputStream(target.toPath())) {
 
             outputStream.write(PASSWORD.getBytes());
 
@@ -87,16 +91,16 @@ class Decrypt extends BaseSecretPicture {
 
     public static void main(String[] args) throws IOException {
 
-        File source = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami" + ENCRYPT_SIGN);
-        File target = new File("C:\\Users\\Grimm\\Pictures\\腾讯微云图片\\xiaoxiami");
+        File source = new File("C:\\Users\\jay\\Desktop\\temp\\IMG_4954等100个文件" + ENCRYPT_SIGN);
+        File target = new File("C:\\Users\\jay\\Desktop\\temp\\IMG_4954等100个文件_解密");
         new Decrypt().doSecret(source, target);
 
     }
 
     @Override
     void operateFile(File source, File target) throws IOException {
-        try (InputStream inputStream = new FileInputStream(source);
-             OutputStream outputStream = new FileOutputStream(target)) {
+        try (InputStream inputStream = Files.newInputStream(source.toPath());
+             OutputStream outputStream = Files.newOutputStream(target.toPath())) {
 
             byte[] secretBytes = PASSWORD.getBytes();
             int secret = inputStream.read(secretBytes);
