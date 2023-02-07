@@ -34,7 +34,8 @@ insert into menu(`name`, `parent_id`) select '感谢页', id from menu where `na
 with recursive recursive_menu as (
     select * from menu where `name` = '首页'
     union all
-    select m.* from menu m inner join recursive_menu rm on m.parent_id = rm.id)
+    select m.* from menu m inner join recursive_menu rm on m.parent_id = rm.id
+)
 select *
 from recursive_menu;
 
