@@ -1,5 +1,7 @@
 package practice.util;
 
+import lombok.Getter;
+
 /**
  * long 8字节 64位
  *
@@ -8,13 +10,14 @@ package practice.util;
  */
 public class BitMap {
 
+    @Getter
     private final long size;
     private final long[] table;
 
     public BitMap(long size) {
         this.size = size;
-        int a = (int) (size >>> 6); // 除以 2^6 （64，1long = 8byte = 64bit）
-        long b = size % 64;
+        int a = (int) (size >>> 6); // 除以64 （1long = 8byte = 64bit）
+        long b = size & 63; // 取余64
         if (b > 0) {
             table = new long[a + 1];
         } else {
@@ -47,11 +50,12 @@ public class BitMap {
     }
 
     private int tableIndex(long index) {
-        return (int) ((index + 1) >>> 6);
+        return (int) (index >>> 6);
     }
 
     private int bitIndex(long index) {
-        return (int) (index % 64);
+        // index & 63 相当于 index % 64
+        return (int) (index & 63);
     }
 
     private void rangeCheck(long index) {
