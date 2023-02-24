@@ -2,27 +2,29 @@ package practice.demo;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Jay Yang
- * @date 2022/10/17
+ * @date 2023/02/24
  */
-public class SynchronizedOrderDemo {
+public class ReentrantLockOrderDemo {
 
     public static void main(String[] args) throws InterruptedException {
 
         int threadNum = 10;
 
-        Object lock = new Object();
+        ReentrantLock lock = new ReentrantLock();
         CountDownLatch cdl = new CountDownLatch(threadNum + 1);
 
         new Thread(() -> {
 
-            synchronized (lock) {
-
+            lock.lock();
+            try {
                 LockSupport.parkUntil(System.currentTimeMillis() + 3000L);
                 cdl.countDown();
-
+            } finally {
+                lock.unlock();
             }
 
         }).start();
@@ -34,9 +36,13 @@ public class SynchronizedOrderDemo {
             new Thread(() -> {
 
                 System.out.println(Thread.currentThread().getName() + "开始获取锁");
-                synchronized (lock) {
+                lock.lock();
+                try {
                     System.out.println(Thread.currentThread().getName() + "获得锁");
                     cdl.countDown();
+                } finally {
+                    System.out.println(Thread.currentThread().getName() + "释放锁");
+                    lock.unlock();
                 }
 
             }, "demo-thread-" + i)
