@@ -39,3 +39,11 @@ with recursive recursive_menu as (
 select *
 from recursive_menu;
 
+-- 凭空创建数据
+with recursive t_date (i, date) as (
+    select 1, current_date
+    union all
+    select i + 1, date_sub(date, interval 1 day) from t_date where i < 7
+)
+select *
+from t_date;
