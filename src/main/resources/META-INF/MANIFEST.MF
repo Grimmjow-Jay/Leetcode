@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Premain-Class: com.jay.TimeCostAgent
+Agent-Class: com.jay.TimeCostAgent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
