@@ -45,9 +45,9 @@ public class TimeCostTransFormer implements ClassFileTransformer {
                             String className,
                             Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain,
-                            byte[] classfileBuffer) {
+                            byte[] classFileBuffer) {
         if (!doAgent(className)) {
-            return classfileBuffer;
+            return classFileBuffer;
         }
         if (!cachedClassLoaders.contains(String.valueOf(loader))) {
             CLASS_POOL.appendClassPath(new LoaderClassPath(loader));
@@ -55,7 +55,7 @@ public class TimeCostTransFormer implements ClassFileTransformer {
         }
         System.out.println("class will do agent: " + className);
         try {
-            CtClass cl = CLASS_POOL.makeClass(new ByteArrayInputStream(classfileBuffer));
+            CtClass cl = CLASS_POOL.makeClass(new ByteArrayInputStream(classFileBuffer));
             if (isMybatisBaseExecutor(className)) {
                 for (CtMethod method : cl.getDeclaredMethods()) {
                     editMybatisBaseExecutorMethod(method);
@@ -72,7 +72,7 @@ public class TimeCostTransFormer implements ClassFileTransformer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return classfileBuffer;
+        return classFileBuffer;
     }
 
     private boolean doAgent(String className) {

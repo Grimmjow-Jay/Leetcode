@@ -59,8 +59,9 @@ public class TimeCostHolder {
                 overSize++;
                 return;
             }
-            if (tasks.size() > 300) {
+            if (tasks.size() > 200) {
                 overSizeTask = new Task("OVER_SIZE");
+                overSizeTask.setDepth(taskStack.size());
                 overSize++;
                 return;
             }
