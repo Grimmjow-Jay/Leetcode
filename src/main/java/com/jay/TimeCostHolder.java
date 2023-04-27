@@ -5,11 +5,13 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.StringJoiner;
 
 /**
  * @author Jay Yang
  * @date 2023/4/16
  */
+@SuppressWarnings("unused")
 public class TimeCostHolder {
 
     private static final ThreadLocal<TaskStack> threadLocalStopWatchTask = new ThreadLocal<>();
@@ -49,9 +51,18 @@ public class TimeCostHolder {
         private long stackStartTime = Long.MAX_VALUE;
         private long stackEndTime = Long.MIN_VALUE;
 
+        private int overSize = 0;
+        private Task overSizeTask = null;
+
         public void push(Task task) {
-            if (tasks.size() > 500) {
-                throw new TaskStackOverFlowException();
+            if (overSizeTask != null) {
+                overSize++;
+                return;
+            }
+            if (tasks.size() > 300) {
+                overSizeTask = new Task("OVER_SIZE");
+                overSize++;
+                return;
             }
             int depth = taskStack.size();
             task.setDepth(depth);
@@ -62,6 +73,14 @@ public class TimeCostHolder {
         }
 
         public void pop() {
+            if (overSizeTask != null) {
+                if (overSize > 0) {
+                    overSize--;
+                    overSizeTask.setEndTime(System.nanoTime());
+                    return;
+                }
+            }
+
             if (taskStack.isEmpty()) {
                 return;
             }
@@ -78,70 +97,56 @@ public class TimeCostHolder {
 
         public String prettyPrint() {
 
-            StringBuilder builder = new StringBuilder();
-
-            String waterfall = "waterfall";
-
-            int waterFallBeginBlankLength = (DOT_LENGTH - waterfall.length()) / 2;
-            int waterFallEndBlankLength = DOT_LENGTH - waterfall.length() - waterFallBeginBlankLength;
-            String waterFallBeginBlank = repeat(waterFallBeginBlankLength, "-");
-            String waterFallEndBlank = repeat(waterFallEndBlankLength, "-");
-            builder.append("|");
-            builder.append(waterFallBeginBlank);
-            builder.append(waterfall);
-            builder.append(waterFallEndBlank);
-            builder.append("|");
-            builder.append("-----start-----|------end------");
-            builder.append("|");
-
-            String cost = "cost";
-            String totalMills = totalMills() + "ms";
+            String totalMills = ((this.stackEndTime - this.stackStartTime) / ONE_MILL_TO_NANOS) + "ms";
             int costLength = Math.max(totalMills.length(), "--cost--".length());
 
-            int costBeginBlankLength = (costLength - cost.length()) / 2;
-            int costEndBlankLength = costLength - cost.length() - costBeginBlankLength;
-            String costBeginBlank = repeat(costBeginBlankLength, "-");
-            String costEndBlank = repeat(costEndBlankLength, "-");
+            StringJoiner joiner = new StringJoiner("|", "|", "");
+            joiner.add(this.prettyFormat("start", String.valueOf(this.stackStartTime).length()));
+            joiner.add(this.prettyFormat("end", String.valueOf(this.stackEndTime).length()));
+            joiner.add(this.prettyFormat("waterfall", DOT_LENGTH));
+            joiner.add(this.prettyFormat("cost", costLength));
+            joiner.add(this.prettyFormat("method", DOT_LENGTH));
 
-            builder.append(costBeginBlank);
-            builder.append(cost);
-            builder.append(costEndBlank);
-            builder.append("|");
-            builder.append(waterFallEndBlank);
-            builder.append("method");
-            builder.append(waterFallBeginBlank);
+            StringBuilder builder = new StringBuilder();
+            builder.append(joiner);
 
             for (Task task : tasks) {
-
-                builder.append(System.lineSeparator())
-                        .append("|");
-
-                int startIndex = position(task.getStartTime());
-                String startBlank = repeat(startIndex, HOLLOW);
-                builder.append(startBlank);
-
-                int endIndex = position(task.getEndTime());
-                String dots = repeat(endIndex - startIndex, SOLID);
-                builder.append(dots);
-
-                String endBlank = repeat(DOT_LENGTH - endIndex, HOLLOW);
-                builder.append(endBlank);
-
-                builder.append("|")
-                        .append(task.getStartTime())
-                        .append("|")
-                        .append(task.getEndTime())
-                        .append("|")
-                        .append(toMills(task.getTimeNanos(), costLength))
-                        .append("|");
-
-                String linkLine = repeat(task.getDepth(), "  ");
-                builder.append(linkLine);
-
-                builder.append(task.getName());
+                buildPrint(task, builder, costLength);
+            }
+            if (overSizeTask != null) {
+                buildPrint(overSizeTask, builder, costLength);
             }
 
             return builder.toString();
+        }
+
+        private void buildPrint(Task task, StringBuilder builder, int costLength) {
+            builder.append(System.lineSeparator())
+                    .append("|")
+                    .append(task.getStartTime())
+                    .append("|")
+                    .append(task.getEndTime())
+                    .append("|");
+
+            int startIndex = position(task.getStartTime());
+            String startBlank = repeat(startIndex, HOLLOW);
+            builder.append(startBlank);
+
+            int endIndex = position(task.getEndTime());
+            String dots = repeat(endIndex - startIndex, SOLID);
+            builder.append(dots);
+
+            String endBlank = repeat(DOT_LENGTH - endIndex, HOLLOW);
+            builder.append(endBlank);
+
+            builder.append("|")
+                    .append(toMills(task.getTimeNanos(), costLength))
+                    .append("|");
+
+            String linkLine = repeat(task.getDepth(), "  ");
+            builder.append(linkLine);
+
+            builder.append(task.getName());
         }
 
         private int position(long time) {
@@ -150,10 +155,6 @@ public class TimeCostHolder {
                     .multiply(BigDecimal.valueOf(DOT_LENGTH))
                     .intValue();
             return Math.min(Math.max(index, 0), DOT_LENGTH);
-        }
-
-        private String totalMills() {
-            return String.valueOf((this.stackEndTime - this.stackStartTime) / ONE_MILL_TO_NANOS);
         }
 
         private String toMills(long timeNanos, int totalLength) {
@@ -172,6 +173,14 @@ public class TimeCostHolder {
                 builder.append(s);
             }
             return builder.toString();
+        }
+
+        private String prettyFormat(String keyword, int length) {
+            int beginBlankLength = (length - keyword.length()) / 2;
+            int endBlankLength = length - beginBlankLength - keyword.length();
+            String beginBlank = repeat(beginBlankLength, "-");
+            String endBlank = repeat(endBlankLength, "-");
+            return beginBlank + keyword + endBlank;
         }
 
     }
@@ -216,9 +225,6 @@ public class TimeCostHolder {
         public long getTimeNanos() {
             return endTime == null ? -1L : (endTime - startTime);
         }
-    }
-
-    private static class TaskStackOverFlowException extends RuntimeException {
     }
 
     private static class ErrorEndPhaseException extends RuntimeException {

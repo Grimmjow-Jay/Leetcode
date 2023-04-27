@@ -33,6 +33,7 @@ public class TimeCostTransFormer implements ClassFileTransformer {
 
     private final String packagePrefix;
     private final String packagePrefix2;
+    private final Set<String> cachedClassLoaders = new HashSet<>();
 
     public TimeCostTransFormer(String packagePrefix) {
         this.packagePrefix = packagePrefix;
@@ -47,6 +48,10 @@ public class TimeCostTransFormer implements ClassFileTransformer {
                             byte[] classfileBuffer) {
         if (!doAgent(className)) {
             return classfileBuffer;
+        }
+        if (!cachedClassLoaders.contains(String.valueOf(loader))) {
+            CLASS_POOL.appendClassPath(new LoaderClassPath(loader));
+            cachedClassLoaders.add(String.valueOf(loader));
         }
         System.out.println("className will do agent: " + className);
         try {
