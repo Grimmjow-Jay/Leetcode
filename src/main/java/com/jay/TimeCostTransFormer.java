@@ -53,7 +53,7 @@ public class TimeCostTransFormer implements ClassFileTransformer {
             CLASS_POOL.appendClassPath(new LoaderClassPath(loader));
             cachedClassLoaders.add(String.valueOf(loader));
         }
-        System.out.println("className will do agent: " + className);
+        System.out.println("class will do agent: " + className);
         try {
             CtClass cl = CLASS_POOL.makeClass(new ByteArrayInputStream(classfileBuffer));
             if (isMybatisBaseExecutor(className)) {
