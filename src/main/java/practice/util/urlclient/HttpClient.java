@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 
@@ -80,17 +81,16 @@ public class HttpClient {
             inputStream = connection.getErrorStream();
         }
 
-        StringBuilder responseBody = new StringBuilder();
+        StringJoiner body = new StringJoiner(System.lineSeparator());
         try (InputStreamReader reader = new InputStreamReader(inputStream);
              BufferedReader bufferedReader = new BufferedReader(reader)) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                responseBody.append(line);
-                responseBody.append(System.lineSeparator());
+                body.add(line);
             }
         }
 
-        return new Response(connection.getRequestMethod(), this.url, responseCode, responseHeaders, responseBody.toString());
+        return new Response(connection.getRequestMethod(), this.url, responseCode, responseHeaders, body.toString());
     }
 
 }
