@@ -22,7 +22,6 @@ public class ReCalculateOutInSummaryDemo {
 
         YearMonth yearMonth = start;
         while (!yearMonth.isAfter(end)) {
-            yearMonth = yearMonth.plusMonths(1);
 
             HttpClient httpClient = HttpClient.open(HttpMethod.GET)
                     .url("https://erp.zhican.com/api/v1/finance/out-in-summary/generator?yearMonth=" + yearMonth)
@@ -32,6 +31,8 @@ public class ReCalculateOutInSummaryDemo {
 
             Response response = httpClient.execute();
             System.out.println(response);
+
+            yearMonth = yearMonth.plusMonths(1);
         }
 
     }
