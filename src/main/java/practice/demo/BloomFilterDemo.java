@@ -86,7 +86,7 @@ public class BloomFilterDemo {
          * 是否存在
          *
          * @param key key
-         * @return true:可能存在; false:一点不存在
+         * @return true:可能存在; false:一定不存在
          */
         public boolean exist(String key) {
 
