@@ -60,11 +60,11 @@ public class HttpClient {
             connection.setRequestProperty(header.getKey(), header.getValue());
         }
 
-        connection.setDoOutput(true);
+        connection.setRequestMethod(this.httpMethod.name());
         if (body != null && body.trim().length() > 0) {
+            connection.setDoOutput(true);
             connection.getOutputStream().write(body.getBytes());
         }
-        connection.setRequestMethod(this.httpMethod.name());
 
         int responseCode = connection.getResponseCode();
         List<Header> responseHeaders = connection.getHeaderFields()
