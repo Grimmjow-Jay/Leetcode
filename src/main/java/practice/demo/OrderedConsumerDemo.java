@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 
 /**
+ * 还有问题，不能直接使用
+ *
  * @author Jay Yang
  * @date 2023/7/19
  */
