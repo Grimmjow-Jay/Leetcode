@@ -24,6 +24,7 @@ public class ThreadPoolDemo {
                 new LinkedBlockingQueue<>(capacity),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.CallerRunsPolicy());
+        threadPoolExecutor.allowCoreThreadTimeOut(true);
 
         int count = 200;
         CountDownLatch cdl = new CountDownLatch(count);
