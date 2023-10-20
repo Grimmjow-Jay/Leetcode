@@ -13,7 +13,6 @@ public class ThreadPoolDemo {
 
         int corePoolSize = 2;
         int maximumPoolSize = 10;
-        int capacity = 15;
         long keepAliveTime = 10L;
 
         ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
@@ -21,10 +20,9 @@ public class ThreadPoolDemo {
                 maximumPoolSize,
                 keepAliveTime,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>(capacity),
+                new SynchronousQueue<>(),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.CallerRunsPolicy());
-        threadPoolExecutor.allowCoreThreadTimeOut(true);
 
         int count = 200;
         CountDownLatch cdl = new CountDownLatch(count);
