@@ -16,6 +16,11 @@ public class LocalDateTimeUntilDemo {
 
         System.out.println(from.until(end, ChronoUnit.MILLIS));
         System.out.println(end.until(from, ChronoUnit.MILLIS));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime later = now.plusSeconds(10);
+        System.out.println(later.until(now, ChronoUnit.MILLIS));
+
     }
 
 }
