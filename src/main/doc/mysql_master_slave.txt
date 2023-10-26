@@ -1,0 +1,34 @@
+### mysql主从配置步骤
+
+参考：https://blog.csdn.net/baidu_37366055/article/details/123703563
+
+1. 安装master
+   docker run -d --restart=always --memory 300m -e MYSQL_ROOT_PASSWORD=123456 -p 13306:3306 --name mysql_master docker.io/mysql:8.0.27
+2. 安装slave
+   docker run -d --restart=always --memory 300m -e MYSQL_ROOT_PASSWORD=123456 -p 23306:3306 --name mysql_slave docker.io/mysql:8.0.27
+3. 进入master容器，修改master配置
+   docker exec -it mysql_master bash
+   echo 'log-bin=mysql-bin' >> /etc/mysql/my.cnf
+   echo 'server-id=1' >> /etc/mysql/my.cnf
+4. 进入slave，修改slave配置
+   docker exec -it mysql_slave bash
+   echo 'server-id=2' >> /etc/mysql/my.cnf
+5. 重启master和slave，使配置生效
+   docker restart mysql_master mysql_slave
+6. 登录master数据库，创建用于同步数据的用户
+   create user 'replicator'@'%' identified with mysql_native_password by 'abc123';
+   grant replication slave on *.* to 'replicator'@'%';
+   flush privileges;
+7. 查看master当前binlog文件名和位置
+   show master status;
+   将查询到File和Position两个字段
+8. 在slave上设置主节点参数
+   CHANGE MASTER TO MASTER_HOST='172.17.0.2',  -- master的地址
+   MASTER_PORT=3306,                           -- master的端口
+   MASTER_USER='replicator',                   -- 同步数据的用户名
+   MASTER_PASSWORD='abc123',                   -- 同步数据的用户密码
+   MASTER_LOG_FILE='mysql-bin.000001',         -- 上一步中查询的master的binlog的File字段
+   MASTER_LOG_POS=838;                         -- 上一步中查询的master的binlog的Position字段
+9. 开启主从同步，在slave上执行
+   start slave;
+   show slave status\G;
