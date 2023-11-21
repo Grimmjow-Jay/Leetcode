@@ -22,6 +22,10 @@ public class EmptyMatchDemo {
                 .anyMatch(e -> e.equals("a"));
         System.out.println(anyMatch);
 
+        boolean noneMatch = emptyList.stream()
+                .noneMatch(e -> e.equals("a"));
+        System.out.println(noneMatch);
+
     }
 
 }
